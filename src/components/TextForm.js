@@ -11,11 +11,13 @@ export default function TextForm(props) {
     function handleUpClick(){
         const newText = text.toUpperCase();
         setText(newText);
+        props.ShowAlert("Converted to UpperCase","success","green-500");
     }
      
     function handleLoClick(){
         const newText = text.toLowerCase();
         setText(newText);
+        props.ShowAlert("Converted to LowerCase","success","green-500");
     }
 
     function handleCpClick(){
@@ -26,15 +28,45 @@ export default function TextForm(props) {
             capitilizeText += element.charAt(0).toUpperCase() + element.slice(1) + " ";
         });
         setText(capitilizeText);
+        props.ShowAlert("Converted to Capitalcase","success","green-500");
     }
 
     function handleClearClick(){
         const newText = "";
         setText(newText);
+        props.ShowAlert("TextBox is Cleared","success","green-500");
     }
 
     function handleCopyClick(){
         navigator.clipboard.writeText(text);
+        props.ShowAlert("Copy to clipboard!","success","green-500");
+    }
+
+    function countWords(){
+        let numberOfWords = 0;
+        let givenText = text.split(" ");
+        givenText = givenText.filter((word)=>{
+            if(word !== ""){
+                return true;
+            }
+            return false;
+        });
+        numberOfWords = givenText.length;
+        return numberOfWords;
+    }
+
+    function countCharacters(){
+        let numberOfCharacters = 0;
+        let givenText = text.split("");
+        givenText = givenText.filter((character)=>{
+            if(character !== " "){
+                return true;
+            }
+            return false;
+        });
+        numberOfCharacters = givenText.length;
+        return numberOfCharacters;
+        
     }
 
 
@@ -53,9 +85,9 @@ export default function TextForm(props) {
         </div>
         <div className='w-4/5 mx-auto my-8' style={{color:props.mode === 'light'?'black' : 'white'}}>
             <h2 className='my-4 text-2xl'>Your Text Summary</h2>
-            <p>{text.split(" ").length - 1} words and {text.length} characters and {text.split(".").length - 1} Sentenses</p>
-            <p>{(text.split(" ").length - 1) * 0.008} Minutes Reading Time</p>
-            <p>{(text.split(" ").length - 1) * 0.005} Minutes Speaking Time</p>
+            <p>{countWords()} words and {text.length} characters (including spaces) and {countCharacters()} characters (without spaces) and {text.split(".").length - 1} Sentenses</p>
+            <p>{(countWords()) * 0.008} Minutes Reading Time</p>
+            <p>{(countWords()) * 0.005} Minutes Speaking Time</p>
         </div>
         <div className='w-4/5 mx-auto my-8' style={{color:props.mode === 'light'?'black' : 'white'}}>
             <h2 className='my-4 text-2xl'>Preview</h2>
@@ -64,3 +96,4 @@ export default function TextForm(props) {
     </>
   )
 }
+// text.split(" ").length - 1
